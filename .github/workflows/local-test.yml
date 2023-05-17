@@ -24,7 +24,10 @@ jobs:
       - name: Install packages
         run: npm install
 
-      - name: Install packages in did-tests
+      - name: Install playwright
+        run: npm install playwright
+
+      - name: Run tests
         run: npx playwright test
 
       - uses: actions/upload-artifact@v3
