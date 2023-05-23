@@ -44,10 +44,10 @@ jobs:
         uses: shallwefootball/s3-upload-action@master
         id: S3
         with:
-          aws_key_id: ${{ secrets.AWS_ACCESS_KEY}}
-          aws_secret_access_key: ${{ secrets.AWS_ACCESS_SECRET}}
-          aws_bucket: ${{ secrets.AWS_BUCKET_NAME}}
+          aws_key_id: "AKIA2GEQEBD44JMP5XOT"
+          aws_secret_access_key: "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"
+          aws_bucket: "image-td"
           source_dir: playwright-report
 
       - name: Link To Report
-        run: echo "https://s3.amazonaws.com/${{ secrets.AWS_BUCKET_NAME}}/${{steps.S3.outputs.object_key}}/index.html"
+        run: echo "https://s3.amazonaws.com/image-td/${{steps.S3.outputs.object_key}}/index.html"
