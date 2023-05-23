@@ -39,3 +39,15 @@ jobs:
           name: Test Report
           path: playwright-report
           retention-days: 28
+
+      - name: Upload to S3
+        uses: shallwefootball/s3-upload-action@master
+        id: S3
+        with:
+          aws_key_id: ${{ secrets.AWS_ACCESS_KEY}}
+          aws_secret_access_key: ${{ secrets.AWS_ACCESS_SECRET}}
+          aws_bucket: ${{ secrets.AWS_BUCKET_NAME}}
+          source_dir: playwright-report
+
+      - name: Link To Report
+        run: echo "https://s3.amazonaws.com/${{ secrets.AWS_BUCKET_NAME}}/${{steps.S3.outputs.object_key}}/index.html"
