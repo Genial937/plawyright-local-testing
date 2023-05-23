@@ -1,0 +1,54 @@
+name: Playwright tests
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install packages
+        run: npm install
+
+      - name: Install playwright
+        run: npm install playwright
+
+      - name: Install playwright test
+        run: npm install -D @playwright/test
+
+      - name: Run tests
+        run: npx playwright test
+
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: Test Report
+          path: playwright-report
+          retention-days: 28
+
+      - uses: hkusu/s3-upload-action@v2
+        id: upload # specify some ID for use in subsequent steps
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_ACCESS_SECRET }}
+          aws-region: "ap-northeast-1"
+          aws-bucket: ${{ secrets.AWS_BUCKET_NAME }}
+          file-path: "./myfile.txt"
+          output-file-url: "true" # specify true
+
+      - name: Show URL
+        run: echo '${{ steps.upload.outputs.file-url }}' # use this output
