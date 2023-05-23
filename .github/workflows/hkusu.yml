@@ -47,7 +47,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_ACCESS_SECRET }}
           aws-region: "ap-northeast-1"
           aws-bucket: ${{ secrets.AWS_BUCKET_NAME }}
-          file-path: "./myfile.txt"
+          file-path: "playwright-report"
           output-file-url: "true" # specify true
 
       - name: Show URL
